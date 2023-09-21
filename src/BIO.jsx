@@ -14,74 +14,39 @@ const BIO = () => {
   const [form, setForm] = useState({
     name: '',
     surname: '',
-    age: 0
+    age: 0,
+    sex: 'female',
+    interest: ''
   });
 
   const [isError, setError] =useState(false);
 
-  const handleNameInputChange = (event) => {
+  const handleInputChange = (event) => {
+    const { name, value} = event.target
+
     setForm({
-      ...form, // 
-      name: event.target.value
+      ...form,
+      [name]: value
     })
-    console.log(event.target.value)
   }
 
-  const handleSetNameBtnClick = () => {
-    if (!form.name) {
+  const handleBtnClick = (key) => {
+    let value = form[key];
+
+    if (!value) {
       setError(true)
       return
     }
 
     setError(false)
 
-    setPerson({
-      ...person,
-      name: form.name
-    })
-  }
-
-  const handleSurnameInputChange = (event) => {
-    setForm({
-      ...form, // 
-      surname: event.target.value
-    })
-    console.log(event.target.value)
-  }
-
-  const handleSetSurnameBtnClick = () => {
-    if (!form.surname) {
-      setError(true)
-      return
+    if (Array.isArray(person [key])) {
+      value = [...person[key], form[key]];
     }
 
-    setError(false)
-
     setPerson({
       ...person,
-      surname: form.surname
-    })
-  }
-
-  const handleAgeInputChange = (event) => {
-    setForm({
-      ...form, // 
-      age: event.target.value
-    })
-    console.log(event.target.value)
-  }
-
-  const handleSetAgeBtnClick = () => {
-    if (!form.age) {
-      setError(true)
-      return
-    }
-
-    setError(false)
-
-    setPerson({
-      ...person,
-      age: parseInt(form.age) // parseInt () перевод числа в строку
+      [key]: value
     })
   }
 
@@ -93,33 +58,76 @@ const BIO = () => {
         type="text"
         name="name"
         value={form.name}
-        onChange={handleNameInputChange} />
+        onChange={handleInputChange} />
 
       <button 
-      onClick={handleSetNameBtnClick}>Задать Имя</button>
+        onClick={() => handleBtnClick('name')}>
+        Задать Имя
+      </button>
 
       <input 
         type="text"
         name="surname"
         value={form.surname}
-        onChange={handleSurnameInputChange} />
+        onChange={handleInputChange} />
 
       <button 
-      onClick={handleSetSurnameBtnClick}>Задать Фамилию</button>
+        onClick={() => handleBtnClick('surname')}>
+        Задать Фамилию
+      </button>
 
       <input 
         type="number"
         name="age"
         value={form.age}
-        onChange={handleAgeInputChange} />
+        onChange={handleInputChange} />
 
       <button 
-      onClick={handleSetAgeBtnClick}>Задать Возраст</button>
+        onClick={() => handleBtnClick('age')}>
+        Задать Возраст
+      </button>
+
+      <p>
+        Пол:
+        <label>
+          <input 
+          type="radio" 
+          name="sex" 
+          value="male" 
+          checked={form.sex === 'male'}
+          onChange={handleInputChange} />
+          мужской
+        </label>
+        <label>
+          <input 
+          type="radio" 
+          name="sex" 
+          value="female"
+          checked={form.sex === 'female'}
+          onChange={handleInputChange} />
+          женский
+        </label>
+        <button 
+        onClick={() => handleBtnClick('sex')}>
+        Задать Пол
+      </button>
+      </p>
+
+      <input 
+        type="text"
+        name="interest"
+        value={form.interest}
+        onChange={handleInputChange} />
+
+      <button 
+        onClick={() => handleBtnClick('interest')}>
+        Дабавить Интерес
+      </button>
 
       <p>Имя: {person.name}</p>
       <p>Фамилия: {person.surname}</p>
       <p>Возраст: {person.age}</p>
-      <p>Пол: {person.sex}</p>
+      <p>Пол: {person.sex === 'male' ? 'мужской' : 'женский'}</p>
       <p>Интересы:</p>
       <div>
         {person.interest.map(interest => (
